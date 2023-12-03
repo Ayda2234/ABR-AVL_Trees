@@ -1,7 +1,19 @@
+# Les arbres binaires de recherche
+
+
 import random
 import timeit
 import matplotlib.pyplot as plt
 
+"""
+Dans un ABR 
+  
+  * chaque noeud possede un cle 
+  * Chaque nœud du sous-arbre gauche possède une clé inférieure ou égale à celle du nœud considéré 
+  * Les elements dun arbre sont stocke dans des dictionnaires tell que chaque "Noeud" est represente dans la facon suivante : 
+      { cle : "12", gauche : "NONE", droite : "NONE"}
+
+""" 
 
 # Fonction pour remplir un arbre avec une taille donnée aleatoirement
 def remplir_arbre(taille, interval_vals, remplissage_func):
@@ -16,22 +28,14 @@ def remplir_arbre(taille, interval_vals, remplissage_func):
         racine = remplissage_func(racine, val)
     return racine
 
-# Fonction générique pour remplir un arbre avec une taille donnée
-def remplir_arbre(taille, interval_vals, remplissage_func):
-    # Assurez-vous que interval_vals est suffisamment grand pour éviter une erreur
-    if interval_vals < taille:
-        raise ValueError("La taille de l'échantillon doit être inférieure ou égale à interval_vals.")
-    
-    valeurs = random.sample(range(1, interval_vals + 1), taille)
-    racine = None
+"""
+Racine : represente le noeud actuel 
+cle : la valeur associer a ce noeud 
 
-    for val in valeurs:
-        racine = remplissage_func(racine, val)
+"""
 
-    return racine
-
-# Remplir l'ABR aléatoirement
-def inserer_racine(racine, cle):
+# Remplir l'ABR 
+def inserer_racine(racine, cle): 
     if racine is None:
         return {"cle": cle, "gauche": None, "droit": None}
     else:
@@ -41,11 +45,17 @@ def inserer_racine(racine, cle):
             racine["droit"] = inserer_racine(racine["droit"], cle)
     return racine
 
-# Remplissage de AVL aléatoirement
+# Remplissage de AVL 
 def hauteur(noeud):
     if not noeud:
-        return 0
-    return noeud[3]
+        return 0 # hauteur = 0 
+    return noeud[3]  # chaque noeud est represente de cette facon : [vlaeur , sous arbre gauche , sous arbre droite , hauteur]
+
+"""
+rééquilibrer l'arbre lorsque le sous-arbre gauche de y est devenu trop grand par rapport à son sous-arbre droit.
+ La fonction renvoie le nouveau nœud qui devient la racine du sous-arbre rééquilibré.
+
+"""
 
 def rotation_droite(y):
     x = y[1]
@@ -58,7 +68,11 @@ def rotation_droite(y):
     x[3] = max(hauteur(x[1]), hauteur(x[2])) + 1
 
     return x
+"""
+rééquilibrer l'arbre lorsque le sous-arbre gauche de y est devenu trop petit par rapport à son sous-arbre droit.
+ La fonction renvoie le nouveau nœud qui devient la racine du sous-arbre rééquilibré.
 
+"""
 def rotation_gauche(x):
     y = x[2]
     T2 = y[1]
@@ -135,9 +149,7 @@ def recherche_avl(racine, x):
 
 # Exemple d'utilisation
 x = 42
-tailles_arbres = [10, 100, 1000, 10000, 100000]
-
-# Initialisez interval_vals avec une valeur appropriée (par exemple, la plus grande taille d'arbre)
+tailles_arbres = [10, 100, 1000]
 interval_vals = max(tailles_arbres)
 
 temps_execution_abr_liste = []
